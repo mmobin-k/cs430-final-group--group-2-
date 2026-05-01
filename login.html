@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KanFlow - Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --coral:  #ff4d1c;
+      --lime:   #4ddd6a;
+      --sky:    #1a8fff;
+      --amber:  #ffb020;
+      --purple: #8b5cf6;
+      --pink:   #f43f8e;
+      --bg:     #09090c;
+      --card:   #13131a;
+      --input:  #1c1c26;
+      --border: #2a2a38;
+      --text:   #f0efff;
+      --sub:    #8888aa;
+      --muted:  #44445a;
+      --font-d: 'Syne', sans-serif;
+      --font-b: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--text);
+      display: flex; min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Left splash */
+    .splash {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: center; padding: 60px;
+      position: relative; overflow: hidden;
+    }
+
+    /* Colorful animated gradient blobs */
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none; animation: float 8s ease-in-out infinite;
+    }
+    .blob-1 { width: 400px; height: 400px; background: rgba(255,77,28,.35); top: -100px; left: -80px; animation-delay: 0s; }
+    .blob-2 { width: 350px; height: 350px; background: rgba(77,221,106,.2);  bottom: -80px; right: -60px; animation-delay: -3s; }
+    .blob-3 { width: 250px; height: 250px; background: rgba(26,143,255,.2);  top: 50%; left: 40%; animation-delay: -5s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-30px) scale(1.05); }
+    }
+
+    /* grid overlay */
+    .splash::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+
+    .splash-content { position: relative; z-index: 1; max-width: 480px; }
+
+    .splash-logo {
+      display: flex; align-items: center; gap: 11px;
+      margin-bottom: 60px; text-decoration: none;
+    }
+    .splash-logo svg { width: 36px; height: 36px; }
+    .splash-logo-text {
+      font-family: var(--font-d); font-size: 1.4rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--coral), var(--pink));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .splash-heading {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800; line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    /* Multi-color gradient on heading */
+    .splash-heading span {
+      background: linear-gradient(90deg, var(--coral), var(--amber), var(--lime));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .splash-sub {
+      color: var(--sub); font-size: .95rem; line-height: 1.7;
+      margin-bottom: 44px; max-width: 380px;
+    }
+
+    .feature-list { display: flex; flex-direction: column; gap: 13px; }
+    .feat {
+      display: flex; align-items: center; gap: 12px;
+      font-size: .88rem; color: var(--sub);
+    }
+    .feat-dot {
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; flex-shrink: 0;
+    }
+
+    /* Right form panel */
+    .form-panel {
+      width: 460px; flex-shrink: 0;
+      background: var(--card);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 48px 42px;
+      animation: slideIn .4s cubic-bezier(.34,1.2,.64,1) both;
+    }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+
+    /* Tabs */
+    .tabs {
+      display: flex; background: var(--input);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 4px; margin-bottom: 28px;
+    }
+    .tab {
+      flex: 1; background: none; border: none;
+      padding: 9px; font-family: var(--font-d);
+      font-size: .82rem; font-weight: 600;
+      color: var(--muted); border-radius: 7px;
+      cursor: pointer; transition: all .15s;
+    }
+    .tab.active { background: var(--card); color: var(--text); box-shadow: 0 1px 8px rgba(0,0,0,.5); }
+
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+
+    .form-title { font-family: var(--font-d); font-size: 1.3rem; font-weight: 800; margin-bottom: 5px; }
+    .form-sub   { font-size: .82rem; color: var(--muted); margin-bottom: 22px; }
+
+    /* fields */
+    .field { margin-bottom: 13px; }
+    label {
+      display: block; font-size: .72rem; font-weight: 700;
+      color: var(--sub); margin-bottom: 5px;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      width: 100%; background: var(--input);
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 10px 13px; font-family: var(--font-b);
+      font-size: .9rem; color: var(--text); outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input:focus { border-color: var(--coral); box-shadow: 0 0 0 3px rgba(255,77,28,.15); }
+    input.bad   { border-color: var(--coral); }
+    input::placeholder { color: var(--muted); }
+
+    .pw-wrap { position: relative; }
+    .show-pw {
+      position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: .72rem; padding: 4px; transition: color .12s;
+    }
+    .show-pw:hover { color: var(--text); }
+
+    .err { display: block; font-size: .71rem; color: var(--coral); margin-top: 3px; min-height: 1em; }
+
+    /* submit button - full gradient */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--coral), var(--pink));
+      color: #fff; border: none; border-radius: 9px;
+      padding: 12px; font-family: var(--font-d);
+      font-size: .9rem; font-weight: 800;
+      cursor: pointer; transition: all .15s; margin-top: 6px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: .01em;
+    }
+    .btn-submit:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(255,77,28,.4); }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; filter: none; }
+
+    .divider {
+      display: flex; align-items: center; gap: 10px;
+      margin: 16px 0; color: var(--muted); font-size: .72rem;
+    }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .btn-google {
+      width: 100%; background: var(--input); color: var(--text);
+      border: 1.5px solid var(--border); border-radius: 9px;
+      padding: 10px; font-family: var(--font-b); font-size: .86rem; font-weight: 500;
+      cursor: pointer; transition: all .15s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-google:hover { border-color: var(--sub); }
+    .btn-google svg { width: 17px; height: 17px; }
+
+    .banner {
+      border-radius: 8px; padding: 9px 12px;
+      font-size: .79rem; margin-bottom: 13px; display: none;
+    }
+    .banner.show { display: block; }
+    .banner-err { background: rgba(255,77,28,.1); border: 1px solid rgba(255,77,28,.3); color: var(--coral); }
+
+    .spin {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,.3); border-top-color: #fff;
+      border-radius: 50%; animation: rot .6s linear infinite; display: none;
+    }
+    .spin.show { display: block; }
+    @keyframes rot { to { transform: rotate(360deg); } }
+
+    .form-foot { margin-top: 18px; font-size: .76rem; color: var(--muted); text-align: center; }
+    .link-btn { color: var(--coral); background: none; border: none; cursor: pointer; font-size: .76rem; padding: 0; }
+
+    :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+    @media (max-width: 860px) { .splash { display: none; } .form-panel { width: 100%; border-left: none; } }
+    @media (max-width: 480px) { .form-panel { padding: 36px 20px; } }
+  </style>
+</head>
+<body>
+
+<!-- Left decorative splash -->
+<div class="splash" aria-hidden="true">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="splash-content">
+    <a href="index.html" class="splash-logo">
+      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="10" height="36" rx="3" fill="#ff4d1c"/>
+        <rect x="15" y="2" width="10" height="26" rx="3" fill="#4ddd6a"/>
+        <rect x="28" y="2" width="10" height="18" rx="3" fill="#1a8fff"/>
+      </svg>
+      <span class="splash-logo-text">KanFlow</span>
+    </a>
+
+    <h1 class="splash-heading">
+      Your team.<br/>
+      <span>In flow.</span>
+    </h1>
+    <p class="splash-sub">A Kanban workspace that keeps everyone on the same page; drag tasks, track progress, and ship together.</p>
+
+    <div class="feature-list">
+      <div class="feat">
+        <div class="feat-dot" style="background:rgba(255,77,28,.15);color:var(--coral)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9,1 2,9 8,9 7,15 14,7 8,7"/></svg></div>
+        Real-time sync
+      </div>
+      <div class="feat">
+        <div class="feat-dot" style="background:rgba(77,221,106,.15);color:var(--lime)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="9" width="3" height="6"/><rect x="6" y="5" width="3" height="10"/><rect x="11" y="1" width="3" height="14"/></svg></div>
+        Live analytics with bar
+      </div>
+      <div class="feat">
+        <div class="feat-dot" style="background:rgba(26,143,255,.15);color:var(--sky)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="7"/><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg></div>
+        Priority labels
+      </div>
+      <div class="feat">
+        <div class="feat-dot" style="background:rgba(255,176,32,.15);color:var(--amber)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="10" height="8" rx="2"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg></div>
+        Secure Firebase auth
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Right form -->
+<main class="form-panel" role="main" aria-label="Sign in to KanFlow">
+  <div class="tabs" role="tablist">
+    <button class="tab active" id="tab-in" role="tab" aria-selected="true"  aria-controls="pnl-in">Sign In</button>
+    <button class="tab"        id="tab-up" role="tab" aria-selected="false" aria-controls="pnl-up">Create Account</button>
+  </div>
+
+  <!-- Sign In -->
+  <div class="auth-panel active" id="pnl-in" role="tabpanel" aria-labelledby="tab-in">
+    <h2 class="form-title">Welcome back</h2>
+    <p class="form-sub">Pick up where your team left off.</p>
+    <div class="banner banner-err" id="err-in" role="alert" aria-live="polite"></div>
+    <form id="form-in" novalidate>
+      <div class="field">
+        <label for="in-email">Email</label>
+        <input type="email" id="in-email" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="in-pw">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="in-pw" placeholder="••••••••" required autocomplete="current-password" />
+          <button type="button" class="show-pw" data-t="in-pw" aria-label="Show password">Show</button>
+        </div>
+      </div>
+      <button type="submit" class="btn-submit" id="btn-in">
+        <span class="spin" id="sp-in" aria-hidden="true"></span>Sign In
+      </button>
+    </form>
+    <div class="divider">or continue with</div>
+    <button class="btn-google" id="g-in" aria-label="Sign in with Google">
+      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Google
+    </button>
+    <p class="form-foot">No account? <button class="link-btn" id="sw-up">Create one →</button></p>
+  </div>
+
+  <!-- Sign Up -->
+  <div class="auth-panel" id="pnl-up" role="tabpanel" aria-labelledby="tab-up">
+    <h2 class="form-title">Join KanFlow</h2>
+    <p class="form-sub">Set up your workspace in seconds.</p>
+    <div class="banner banner-err" id="err-up" role="alert" aria-live="polite"></div>
+    <form id="form-up" novalidate>
+      <div class="field">
+        <label for="up-name">Full Name</label>
+        <input type="text" id="up-name" placeholder="Alex Chen" required autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="up-email">Email</label>
+        <input type="email" id="up-email" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="up-pw">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="up-pw" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password" />
+          <button type="button" class="show-pw" data-t="up-pw" aria-label="Show password">Show</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="up-cf">Confirm Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="up-cf" placeholder="Repeat password" required autocomplete="new-password" />
+          <button type="button" class="show-pw" data-t="up-cf" aria-label="Show confirm">Show</button>
+        </div>
+      </div>
+      <button type="submit" class="btn-submit" id="btn-up">
+        <span class="spin" id="sp-up" aria-hidden="true"></span>Create Account
+      </button>
+    </form>
+    <div class="divider">or continue with</div>
+    <button class="btn-google" id="g-up" aria-label="Sign up with Google">
+      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Google
+    </button>
+    <p class="form-foot">Already have an account? <button class="link-btn" id="sw-in">Sign in →</button></p>
+  </div>
+</main>
+
+<script type="module">
+  import { initializeApp }                        from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword,
+           createUserWithEmailAndPassword,
+           signInWithPopup, GoogleAuthProvider,
+           updateProfile, onAuthStateChanged }    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+  const auth     = getAuth(initializeApp({ apiKey:"AIzaSyDIc_a-0tx6ef-oKIdWSrDKEnEeukjeU04",authDomain:"kanflow-508dd.firebaseapp.com",projectId:"kanflow-508dd",storageBucket:"kanflow-508dd.firebasestorage.app",messagingSenderId:"371974028391",appId:"1:371974028391:web:632ae55106c289c24fe8c2" }));
+  const provider = new GoogleAuthProvider();
+
+  onAuthStateChanged(auth, u => { if (u) window.location.href = "index.html"; });
+
+  // Tab switching
+  function switchTab(t) {
+    ["in","up"].forEach(id => {
+      document.getElementById("tab-"+id).classList.toggle("active", id===t);
+      document.getElementById("tab-"+id).setAttribute("aria-selected", id===t);
+      document.getElementById("pnl-"+id).classList.toggle("active", id===t);
+    });
+  }
+  document.getElementById("tab-in").onclick = () => switchTab("in");
+  document.getElementById("tab-up").onclick = () => switchTab("up");
+  document.getElementById("sw-up").onclick  = () => switchTab("up");
+  document.getElementById("sw-in").onclick  = () => switchTab("in");
+
+  // Password visibility
+  document.querySelectorAll(".show-pw").forEach(btn => {
+    btn.onclick = () => {
+      const inp = document.getElementById(btn.dataset.t);
+      inp.type  = inp.type === "password" ? "text" : "password";
+      btn.textContent = inp.type === "password" ? "Show" : "Hide";
+    };
+  });
+
+  function fbErr(code) {
+    return {"auth/user-not-found":"No account found.","auth/wrong-password":"Incorrect password.","auth/invalid-credential":"Invalid email or password.","auth/email-already-in-use":"Email already in use.","auth/weak-password":"Password must be 6+ chars.","auth/invalid-email":"Invalid email.","auth/popup-closed-by-user":"Sign-in cancelled.","auth/too-many-requests":"Too many attempts - wait a moment."}[code]||"Something went wrong.";
+  }
+  function setLoad(b,s,on) { document.getElementById(b).disabled=on; document.getElementById(s).classList.toggle("show",on); }
+  function showErr(id,msg) { const el=document.getElementById(id); el.textContent=msg; el.classList.add("show"); }
+
+  document.getElementById("form-in").onsubmit = async e => {
+    e.preventDefault();
+    document.getElementById("err-in").classList.remove("show");
+    const email=document.getElementById("in-email").value.trim();
+    const pw=document.getElementById("in-pw").value;
+    if (!email||!pw) return;
+    setLoad("btn-in","sp-in",true);
+    try { await signInWithEmailAndPassword(auth,email,pw); }
+    catch(err) { showErr("err-in",fbErr(err.code)); setLoad("btn-in","sp-in",false); }
+  };
+
+  document.getElementById("form-up").onsubmit = async e => {
+    e.preventDefault();
+    document.getElementById("err-up").classList.remove("show");
+    const name=document.getElementById("up-name").value.trim();
+    const email=document.getElementById("up-email").value.trim();
+    const pw=document.getElementById("up-pw").value;
+    const cf=document.getElementById("up-cf").value;
+    if (!name||!email) return;
+    if (pw.length<6) { showErr("err-up","Password must be at least 6 characters."); return; }
+    if (pw!==cf)     { showErr("err-up","Passwords do not match."); return; }
+    setLoad("btn-up","sp-up",true);
+    try { const c=await createUserWithEmailAndPassword(auth,email,pw); await updateProfile(c.user,{displayName:name}); }
+    catch(err) { showErr("err-up",fbErr(err.code)); setLoad("btn-up","sp-up",false); }
+  };
+
+  async function googleAuth() {
+    try { await signInWithPopup(auth,provider); }
+    catch(err) { const p=document.getElementById("pnl-in").classList.contains("active")?"in":"up"; showErr("err-"+p,fbErr(err.code)); }
+  }
+  document.getElementById("g-in").onclick = googleAuth;
+  document.getElementById("g-up").onclick = googleAuth;
+</script>
+</body>
+</html>

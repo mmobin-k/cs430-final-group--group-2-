@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KanFlow - About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .acard {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:24px;
+    }
+    .acard-full { grid-column:1/-1; }
+    .acard h2 { font-size:.95rem; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+
+    .acard p { font-size:.86rem; color:var(--text-sub); line-height:1.75; margin-bottom:9px; }
+    .acard p:last-child { margin-bottom:0; }
+
+    /* team members row */
+    .members { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .memb {
+      display:flex; align-items:center; gap:8px;
+      background:var(--bg-2); border:1px solid var(--border);
+      border-radius:var(--radius); padding:7px 12px;
+    }
+    .memb-av {
+      width:26px; height:26px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-d); font-size:.7rem; font-weight:800; color:#fff; flex-shrink:0;
+    }
+    .memb-n { font-size:.8rem; font-weight:600; }
+    .memb-r { font-size:.68rem; color:var(--text-dim); }
+
+    /* tech pills */
+    .tech-pills { display:flex; flex-wrap:wrap; gap:7px; margin-top:8px; }
+    .tpill {
+      font-size:.72rem; font-weight:600;
+      background:var(--bg-2); border:1px solid var(--border);
+      color:var(--text-sub); padding:4px 11px; border-radius:99px;
+    }
+
+    /* checklist */
+    .checklist { display:flex; flex-direction:column; gap:9px; margin-top:6px; }
+    .chk { display:flex; align-items:flex-start; gap:9px; font-size:.84rem; color:var(--text-sub); }
+    .chk-icon {
+      flex-shrink:0; margin-top:1px; width:16px; height:16px;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .chk-icon svg { display:block; }
+
+    /* credits */
+    .credits { display:flex; flex-direction:column; gap:9px; margin-top:6px; }
+    .credit {
+      display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+      padding-bottom:9px; border-bottom:1px solid var(--border); font-size:.82rem;
+    }
+    .credit:last-child { border-bottom:none; padding-bottom:0; }
+    .credit-t { color:var(--text-dim); min-width:65px; font-size:.75rem; }
+    .credit-n { flex:1; color:var(--text); font-weight:500; }
+    .credit-l { color:var(--sky); text-decoration:underline; font-size:.76rem; white-space:nowrap; }
+
+    @media(max-width:700px){ .about-grid{grid-template-columns:1fr;} .acard-full{grid-column:1;} }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to about</a>
+<div id="sidebar-root"></div>
+<main class="page-area" id="main">
+  <div class="page-topbar">
+    <div><h1 class="page-heading">About</h1><p class="page-sub">What KanFlow is, how it was built, and what it runs on.</p></div>
+  </div>
+  <div class="page-content">
+    <div class="about-grid">
+
+      <!-- What is KanFlow -->
+      <div class="acard acard-full">
+        <h2>What is KanFlow?</h2>
+        <p>KanFlow is an interactive Kanban board web app built for the CS 430 Internet Multimedia Programming semester group project. It uses HTML5, CSS3, and vanilla JavaScript with Firebase Auth and Firestore for authentication and real-time cloud data storage.</p>
+        <p>Tasks live across five workflow columns - Backlog, To Do, In Progress, Review, and Done. Every drag, edit, and delete syncs live to Firestore, so changes appear instantly across all open sessions.</p>
+        <div class="members" aria-label="Project team">
+          <div class="memb"><div class="memb-av" style="background:#ff4d1c" aria-hidden="true">A</div><div><div class="memb-n">Muhammad Mobin</div><div class="memb-r">Frontend Dev</div></div></div>
+          <div class="memb"><div class="memb-av" style="background:#1a8fff" aria-hidden="true">S</div><div><div class="memb-n">Aashish Joshi</div><div class="memb-r">Backend Dev</div></div></div>
+          <div class="memb"><div class="memb-av" style="background:#4ddd6a" aria-hidden="true">T</div><div><div class="memb-n">Natalia Criollo</div><div class="memb-r">UX Designer</div></div></div>
+          <div class="memb"><div class="memb-av" style="background:#8b5cf6" aria-hidden="true">J</div><div><div class="memb-n">Muhammad Mobin</div><div class="memb-r">Project Manager</div></div></div>
+        </div>
+      </div>
+
+      <!-- Tech stack -->
+      <div class="acard acard-full">
+        <h2>Technologies</h2>
+        <p>No external JavaScript frameworks. Everything is built on web standards, with Firebase handling auth and storage.</p>
+        <div class="tech-pills">
+          <span class="tpill">HTML5</span><span class="tpill">CSS3 Custom Props</span>
+          <span class="tpill">Vanilla JS (ES6+)</span><span class="tpill">Canvas 2D API</span>
+          <span class="tpill">HTML5 Drag + Drop</span><span class="tpill">ES Modules</span>
+          <span class="tpill">Firebase Auth</span><span class="tpill">Cloud Firestore</span>
+          <span class="tpill">Firebase Hosting</span><span class="tpill">SVG</span>
+          <span class="tpill">HTML5 Audio + Video</span><span class="tpill">CSS Grid + Flex</span>
+        </div>
+      </div>
+
+      <!-- Media credits -->
+      <div class="acard acard-full">
+        <h2>Media Credits &amp; Licenses</h2>
+        <div class="credits">
+          <div class="credit">
+            <span class="credit-t">Video</span>
+            <span class="credit-n">"simpleshow explains the Agile Company"; simpleshow GmbH</span>
+            <a href="https://youtu.be/VtFJhHEieHM" class="credit-l" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+          </div>
+          <div class="credit">
+            <span class="credit-t">Audio</span>
+            <span class="credit-n">SoundHelix Song 1; ree use license</span>
+            <a href="https://www.soundhelix.com" class="credit-l" target="_blank" rel="noopener noreferrer">soundhelix.com ↗</a>
+          </div>
+          <div class="credit">
+            <span class="credit-t">SVG</span>
+            <span class="credit-n">Logo, workflow diagram, and all illustrations; created with SVG Editor</span>
+            <a href="https://svgeditoronline.com" class="credit-l" target="_blank" rel="noopener noreferrer">svgeditoronline.com ↗</a>
+          </div>
+          <div class="credit">
+            <span class="credit-t">Canvas</span>
+            <span class="credit-n">All charts drawn with the native Canvas 2D API</span>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" class="credit-l" target="_blank" rel="noopener noreferrer">MDN Canvas API ↗</a>
+          </div>
+          <div class="credit">
+            <span class="credit-t">Fonts</span>
+            <span class="credit-n">Syne + DM Sans via Google Fonts; Open Font License</span>
+            <a href="https://fonts.google.com" class="credit-l" target="_blank" rel="noopener noreferrer">fonts.google.com ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <footer class="site-footer" role="contentinfo">KanFlow, a CS 430 Internet Multimedia Programming. No user data is sold or shared.</footer>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<script type="module">
+  import { buildSidebar }                from "./sidebar.js";
+  import { requireAuth, initSignOut,
+           initTheme, initSidebar }      from "./shared.js";
+
+  document.getElementById("sidebar-root").innerHTML = buildSidebar("about");
+  initTheme(); initSidebar(); initSignOut();
+  requireAuth(() => {});
+</script>
+</body>
+</html>

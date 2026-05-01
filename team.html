@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KanFlow - Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .add-member-row {
+      display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
+    }
+    .member-input {
+      background: var(--bg-card); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 8px 12px;
+      font-family: var(--font-b); font-size: .86rem; color: var(--text);
+      outline: none; transition: border-color .12s;
+      flex: 1; min-width: 140px;
+    }
+    .member-input:focus { border-color: var(--sky); box-shadow: 0 0 0 3px rgba(26,143,255,.14); }
+    .remove-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: none; border: none; color: var(--text-dim);
+      font-size: .8rem; cursor: pointer; width: 24px; height: 24px;
+      border-radius: 5px; display: flex; align-items: center; justify-content: center;
+      transition: all .12s;
+    }
+    .remove-btn:hover { color: var(--coral); background: rgba(255,77,28,.12); }
+    .ts-row { display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; }
+    .ts-chip { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 18px; flex:1; min-width:110px; }
+    .ts-n { font-family:var(--font-d); font-size:1.6rem; font-weight:800; line-height:1; }
+    .ts-l { font-size:.66rem; color:var(--text-dim); margin-top:3px; text-transform:uppercase; letter-spacing:.06em; }
+
+    /* member grid */
+    .team-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+
+    .member-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:26px 20px 20px;
+      text-align:center; position:relative; overflow:hidden;
+      transition:border-color .2s,transform .2s;
+    }
+    .member-card:hover { border-color:var(--border-2); transform:translateY(-3px); }
+
+    /* colored top stripe - set via inline style */
+    .member-card::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:3px;
+      background: var(--accent-color, var(--border));
+    }
+
+    .av {
+      width:60px; height:60px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-d); font-size:1.4rem; font-weight:800; color:#fff;
+      margin:0 auto 12px;
+      background: var(--accent-color, var(--border));
+    }
+
+    .m-name { font-size:.96rem; margin-bottom:3px; }
+    .m-role { font-size:.75rem; color:var(--text-dim); margin-bottom:14px; }
+
+    /* task pills breakdown */
+    .m-pills { display:flex; justify-content:center; gap:5px; flex-wrap:wrap; margin-bottom:12px; min-height:22px; }
+    .mpill { font-size:.62rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:2px 7px; border-radius:99px; }
+
+    .m-total { font-family:var(--font-d); font-size:1.1rem; font-weight:800; margin-bottom:2px; }
+    .m-total-l { font-size:.68rem; color:var(--text-dim); }
+
+    /* progress bar */
+    .m-prog { margin-top:12px; }
+    .m-prog-bar { height:4px; background:var(--border); border-radius:99px; overflow:hidden; }
+    .m-prog-fill { height:100%; border-radius:99px; background:var(--accent-color,var(--border)); transition:width .5s ease; }
+    .m-prog-lbl { display:flex; justify-content:space-between; font-size:.65rem; color:var(--text-dim); margin-top:4px; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to team</a>
+<div id="sidebar-root"></div>
+<main class="page-area" id="main">
+  <div class="page-topbar">
+    <div><h1 class="page-heading">Team</h1><p class="page-sub">Workload overview; task counts sync live from the board.</p></div>
+  </div>
+  <div class="page-content">
+
+    <div class="ts-row" aria-label="Team summary" role="region">
+      <div class="ts-chip"><div class="ts-n" id="ts-count">0</div><div class="ts-l">Members</div></div>
+      <div class="ts-chip"><div class="ts-n" id="ts-total">--</div><div class="ts-l">Total Tasks</div></div>
+      <div class="ts-chip"><div class="ts-n" id="ts-done" style="color:var(--lime)">--</div><div class="ts-l">Completed</div></div>
+      <div class="ts-chip"><div class="ts-n" id="ts-unassigned">--</div><div class="ts-l">Unassigned</div></div>
+    </div>
+
+    <!-- Add member form -->
+    <div class="add-member-row" role="region" aria-label="Add team member">
+      <input type="text" id="new-name" class="member-input" placeholder="Full name" maxlength="40" aria-label="New member name" />
+      <input type="text" id="new-role" class="member-input" placeholder="Role (e.g. Designer)" maxlength="40" aria-label="New member role" />
+      <button class="btn btn-primary btn-sm" id="add-member-btn">+ Add Member</button>
+    </div>
+
+    <div class="team-grid" id="team-grid" role="list" aria-label="Team members">
+      <!-- Cards injected by JS -->
+    </div>
+
+  </div>
+  <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project</footer>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script type="module">
+  import { buildSidebar }                         from "./sidebar.js";
+  import { requireAuth, initSignOut,
+           initTheme, initSidebar, app }           from "./shared.js";
+  import { getFirestore, collection, onSnapshot,
+           doc, setDoc, deleteDoc }                from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+  document.getElementById("sidebar-root").innerHTML = buildSidebar("team");
+  initTheme(); initSidebar(); initSignOut();
+
+  const db = getFirestore(app);
+
+  const COLORS = ["#ff4d1c","#1a8fff","#4ddd6a","#8b5cf6","#ffb020","#f43f8e","#00c9b1","#ff9a3c"];
+
+  const STATUS_META = {
+    backlog:    { label:"Backlog",    color:"#555570" },
+    todo:       { label:"To Do",      color:"#1a8fff" },
+    inprogress: { label:"In Prog",    color:"#ffb020" },
+    review:     { label:"Review",     color:"#8b5cf6" },
+    done:       { label:"Done",       color:"#4ddd6a" },
+  };
+
+  let MEMBERS = [];
+  let tasks   = [];
+
+  requireAuth(user => {
+    const membersRef = collection(db, "users", user.uid, "members");
+    const tasksRef   = collection(db, "users", user.uid, "tasks");
+
+    // Live listeners
+    onSnapshot(membersRef, snap => {
+      MEMBERS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderAll();
+    });
+
+    onSnapshot(tasksRef, snap => {
+      tasks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      updateStats();
+    });
+
+    // Add member button
+    document.getElementById("add-member-btn").onclick = async () => {
+      const nameEl = document.getElementById("new-name");
+      const roleEl = document.getElementById("new-role");
+      const name   = nameEl.value.trim();
+      const role   = roleEl.value.trim();
+      if (!name) { nameEl.focus(); return; }
+      const id    = name.toLowerCase().replace(/\s+/g,"_") + "_" + Date.now();
+      const color = COLORS[MEMBERS.length % COLORS.length];
+      await setDoc(doc(db, "users", user.uid, "members", id), { name, role: role || "Team Member", color, initial: name.charAt(0).toUpperCase() });
+      nameEl.value = ""; roleEl.value = "";
+    };
+
+    // Remove member
+    document.getElementById("team-grid").addEventListener("click", async e => {
+      const btn = e.target.closest(".remove-btn");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      if (!confirm("Remove this team member?")) return;
+      await deleteDoc(doc(db, "users", user.uid, "members", id));
+    });
+  });
+
+  function renderAll() {
+    const grid = document.getElementById("team-grid");
+    grid.innerHTML = "";
+    document.getElementById("ts-count").textContent = MEMBERS.length;
+
+    if (MEMBERS.length === 0) {
+      grid.innerHTML = `<p style="color:var(--text-dim);font-size:.88rem;grid-column:1/-1;">No members yet. Add one above.</p>`;
+      return;
+    }
+
+    MEMBERS.forEach(m => {
+      const mine   = tasks.filter(t => t.assignee === m.id);
+      const myDone = mine.filter(t => t.status === "done").length;
+      const pct    = mine.length ? Math.round((myDone / mine.length) * 100) : 0;
+
+      let pillsHtml = "";
+      Object.entries(STATUS_META).forEach(([status, meta]) => {
+        const count = mine.filter(t => t.status === status).length;
+        if (!count) return;
+        pillsHtml += `<span class="mpill" style="background:${meta.color}20;color:${meta.color};border:1px solid ${meta.color}40;">${count} ${meta.label}</span>`;
+      });
+
+      const el = document.createElement("div");
+      el.role = "listitem";
+      el.innerHTML = `
+        <article class="member-card" style="--accent-color:${m.color}" aria-label="${m.name} - ${m.role}">
+          <button class="remove-btn" data-id="${m.id}" aria-label="Remove ${m.name}" title="Remove member">x</button>
+          <div class="av" aria-hidden="true">${m.initial}</div>
+          <h2 class="m-name">${m.name}</h2>
+          <p class="m-role">${m.role}</p>
+          <div class="m-pills" aria-label="${m.name}'s task breakdown">${pillsHtml || ""}</div>
+          <div class="m-total">${mine.length}</div>
+          <div class="m-total-l">tasks assigned</div>
+          <div class="m-prog">
+            <div class="m-prog-bar"><div class="m-prog-fill" style="width:${pct}%"></div></div>
+            <div class="m-prog-lbl"><span>completion</span><span>${pct}%</span></div>
+          </div>
+        </article>
+      `;
+      grid.appendChild(el);
+    });
+
+    updateStats();
+  }
+
+  function updateStats() {
+    document.getElementById("ts-total").textContent      = tasks.length;
+    document.getElementById("ts-done").textContent       = tasks.filter(t => t.status === "done").length;
+    document.getElementById("ts-unassigned").textContent = tasks.filter(t => !t.assignee).length;
+  }
+</script>
+</body>
+</html>

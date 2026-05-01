@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KanFlow - Resources</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .res-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+    }
+    .media-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .media-card:hover { border-color: var(--border-2); transform: translateY(-2px); }
+
+    /* YouTube embed - constrained size */
+    .video-wrap {
+      position: relative; padding-bottom: 56.25%;
+      height: 0; overflow: hidden; background: #000;
+    }
+    .video-wrap iframe {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; border: none;
+    }
+
+    /* SVG card */
+    .illus-body { padding: 20px; }
+    .illus-body svg { width: 100%; border-radius: var(--radius); }
+    .illus-title { font-family: var(--font-d); font-size: .95rem; font-weight: 700; margin: 12px 0 4px; }
+    .illus-sub   { font-size: .8rem; color: var(--text-sub); line-height: 1.6; }
+
+    /* caption below each card */
+    .cap {
+      padding: 11px 16px; border-top: 1px solid var(--border);
+      font-size: .78rem; color: var(--text-sub);
+    }
+    .cap strong { display: block; color: var(--text); margin-bottom: 2px; font-size: .82rem; }
+    .cap a { color: var(--sky); text-decoration: underline; }
+    .source { font-size: .7rem; color: var(--text-dim); margin-top: 3px; display: block; }
+
+    /* Reading cards */
+    .reading-section { margin-top: 32px; }
+    .reading-section h2 { font-size: 1rem; margin-bottom: 14px; }
+    .reading-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .read-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px; transition: border-color .15s;
+      display: block; text-decoration: none; color: inherit;
+    }
+    .read-card:hover { border-color: var(--sky); transform: translateY(-2px); }
+    .rtag {
+      font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      display: inline-block; padding: 2px 7px; border-radius: 99px; margin-bottom: 8px;
+    }
+    .rtag-kanban  { background: rgba(255,77,28,.15);  color: var(--coral); }
+    .rtag-agile   { background: rgba(26,143,255,.15); color: var(--sky); }
+    .rtag-teams   { background: rgba(255,176,32,.15); color: var(--amber); }
+    .rtag-metrics { background: rgba(77,221,106,.15); color: var(--lime); }
+    .read-title { font-family: var(--font-d); font-size: .88rem; font-weight: 700; margin-bottom: 5px; }
+    .read-desc  { font-size: .76rem; color: var(--text-sub); line-height: 1.55; }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to resources</a>
+<div id="sidebar-root"></div>
+
+<main class="page-area" id="main">
+  <div class="page-topbar">
+    <div>
+      <h1 class="page-heading">Resources</h1>
+      <p class="page-sub">Learn the theory behind Kanban and Agile; videos, audio, and reading picks.</p>
+    </div>
+  </div>
+
+  <div class="page-content">
+    <div class="res-grid">
+
+      <!-- YouTube video -->
+      <figure class="media-card">
+        <div class="video-wrap">
+          <!--
+            "simpleshow explains the Agile Company"
+            Source: https://youtu.be/VtFJhHEieHM
+            Embedded via standard YouTube iframe - no autoplay
+          -->
+          <iframe
+            src="https://www.youtube.com/embed/VtFJhHEieHM"
+            title="simpleshow explains the Agile Company; covers Kanban, Scrum, Design Thinking, and Lean Startup"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+        <figcaption class="cap">
+          <strong>simpleshow explains the Agile Company</strong>
+          Animated walkthrough of Kanban, Scrum, Design Thinking, and Lean Startup; the core methods behind modern software teams.
+          <span class="source">
+            Video by <a href="https://simpleshow.com" target="_blank" rel="noopener noreferrer">simpleshow GmbH</a> -
+            <a href="https://youtu.be/VtFJhHEieHM" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+          </span>
+        </figcaption>
+        <details class="transcript" style="padding:12px 16px;border-top:1px solid var(--border);font-size:.78rem;color:var(--text-sub);line-height:1.7;">
+          <summary style="cursor:pointer;font-weight:600;color:var(--text);font-size:.78rem;margin-bottom:0;list-style:none;display:flex;align-items:center;gap:6px;">
+            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="4,6 8,10 12,6"/></svg>
+            Video Transcript Summary
+          </summary>
+          <p style="margin-top:10px;">This animated video by simpleshow GmbH introduces how modern companies use agile methods to stay flexible and competitive. It covers four core frameworks:</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Kanban</strong> - a visual workflow system using cards and columns to track tasks as they move from To Do through to Done. Teams limit how much work is in progress at once to avoid bottlenecks.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Scrum</strong> - work is broken into short fixed-length sprints (usually two weeks). Each sprint has a defined goal, a daily standup meeting, and a review at the end.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Design Thinking</strong> - a user-centered problem-solving approach with five stages: Empathise, Define, Ideate, Prototype, and Test. The goal is to deeply understand user needs before building solutions.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Lean Startup</strong> - build a minimum viable product (MVP), measure how real users respond, and learn from the results. Repeat this loop rapidly rather than spending years building something before getting feedback.</p>
+          <p style="margin-top:8px;">The video concludes that no single method is best for every situation - successful companies often combine elements from all four depending on the type of work.</p>
+        </details>
+      </figure>
+
+      <!-- Kanban Core Principles card -->
+      <figure class="media-card">
+        <div class="illus-body">
+          <!-- Original SVG - Core Kanban principles visual reference -->
+          <svg viewBox="0 0 320 185" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-labelledby="princ-t princ-d">
+            <title id="princ-t">Core Kanban Principles</title>
+            <desc id="princ-d">Six numbered principles of Kanban displayed in a grid layout.</desc>
+            <rect width="320" height="185" rx="10" fill="var(--bg-2)"/>
+            <text x="160" y="18" text-anchor="middle" font-family="Syne,sans-serif" font-size="9" font-weight="800" fill="var(--text)">Core Kanban Principles</text>
+
+            <!-- Row 1 -->
+            <rect x="8"   y="26" width="92" height="48" rx="5" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="8"   y="26" width="92" height="3"  rx="1" fill="#ff4d1c"/>
+            <text x="14"  y="43" font-family="Syne,sans-serif" font-size="7.5" font-weight="800" fill="#ff4d1c">01</text>
+            <text x="14"  y="55" font-family="Syne,sans-serif" font-size="7" font-weight="600" fill="var(--text)">Visualise Work</text>
+            <text x="14"  y="66" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">See every task on</text>
+            <text x="14"  y="74" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">the board at once.</text>
+
+            <rect x="114" y="26" width="92" height="48" rx="5" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="114" y="26" width="92" height="3"  rx="1" fill="#1a8fff"/>
+            <text x="120" y="43" font-family="Syne,sans-serif" font-size="7.5" font-weight="800" fill="#1a8fff">02</text>
+            <text x="120" y="55" font-family="Syne,sans-serif" font-size="7" font-weight="600" fill="var(--text)">Limit WIP</text>
+            <text x="120" y="66" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">Cap work-in-progress</text>
+            <text x="120" y="74" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">to reduce bottlenecks.</text>
+
+            <rect x="220" y="26" width="92" height="48" rx="5" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="220" y="26" width="92" height="3"  rx="1" fill="#ffb020"/>
+            <text x="226" y="43" font-family="Syne,sans-serif" font-size="7.5" font-weight="800" fill="#ffb020">03</text>
+            <text x="226" y="55" font-family="Syne,sans-serif" font-size="7" font-weight="600" fill="var(--text)">Manage Flow</text>
+            <text x="226" y="66" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">Watch cards move,</text>
+            <text x="226" y="74" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">spot slow stages.</text>
+
+            <!-- Row 2 -->
+            <rect x="8"   y="84" width="92" height="48" rx="5" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="8"   y="84" width="92" height="3"  rx="1" fill="#4ddd6a"/>
+            <text x="14"  y="101" font-family="Syne,sans-serif" font-size="7.5" font-weight="800" fill="#4ddd6a">04</text>
+            <text x="14"  y="113" font-family="Syne,sans-serif" font-size="7" font-weight="600" fill="var(--text)">Explicit Policies</text>
+            <text x="14"  y="124" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">Define done so the</text>
+            <text x="14"  y="132" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">whole team agrees.</text>
+
+            <rect x="114" y="84" width="92" height="48" rx="5" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="114" y="84" width="92" height="3"  rx="1" fill="#8b5cf6"/>
+            <text x="120" y="101" font-family="Syne,sans-serif" font-size="7.5" font-weight="800" fill="#8b5cf6">05</text>
+            <text x="120" y="113" font-family="Syne,sans-serif" font-size="7" font-weight="600" fill="var(--text)">Feedback Loops</text>
+            <text x="120" y="124" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">Review regularly and</text>
+            <text x="120" y="132" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">act on what you find.</text>
+
+            <rect x="220" y="84" width="92" height="48" rx="5" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="220" y="84" width="92" height="3"  rx="1" fill="#ff4d1c"/>
+            <text x="226" y="101" font-family="Syne,sans-serif" font-size="7.5" font-weight="800" fill="#ff4d1c">06</text>
+            <text x="226" y="113" font-family="Syne,sans-serif" font-size="7" font-weight="600" fill="var(--text)">Improve Together</text>
+            <text x="226" y="124" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">Evolve the process</text>
+            <text x="226" y="132" font-family="DM Sans,sans-serif" font-size="6" fill="var(--text-dim)">as a team, not solo.</text>
+
+            <!-- footer label -->
+            <text x="160" y="175" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="6.5" fill="var(--text-dim)">Based on the six core practices of the Kanban Method (David J. Anderson)</text>
+          </svg>
+          <h3 class="illus-title">The 6 Kanban Practices</h3>
+          <p class="illus-sub">These six practices form the backbone of the Kanban Method. Understanding them helps you get more out of any board, not just KanFlow.</p>
+        </div>
+        <figcaption class="cap">
+          <strong>Core Kanban Practices Reference</strong>
+          <span class="source">Based on David J. Anderson's Kanban Method. Original SVG created for this project (KanFlow, CS 430).</span>
+        </figcaption>
+      </figure>
+
+      <!-- SVG illustration -->
+      <figure class="media-card">
+        <div class="illus-body">
+          <!--
+            Original SVG illustration for this project.
+            Shows tasks flowing left→right through Kanban stages.
+          -->
+          <svg viewBox="0 0 320 185" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-labelledby="illus-t illus-d">
+            <title id="illus-t">Kanban Workflow Diagram</title>
+            <desc id="illus-d">Three columns: Backlog, In Progress, and Done. Task cards with colored priority stripes move from left to right through the workflow.</desc>
+
+            <rect width="320" height="185" rx="10" fill="var(--bg-2)"/>
+
+            <!-- column backgrounds -->
+            <rect x="8"   y="28" width="90" height="148" rx="6" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="115" y="28" width="90" height="148" rx="6" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="222" y="28" width="90" height="148" rx="6" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1"/>
+
+            <!-- column top accent bars -->
+            <rect x="8"   y="28" width="90" height="3" rx="1" fill="#555570"/>
+            <rect x="115" y="28" width="90" height="3" rx="1" fill="#ffb020"/>
+            <rect x="222" y="28" width="90" height="3" rx="1" fill="#4ddd6a"/>
+
+            <!-- column headers -->
+            <text x="53"  y="43" text-anchor="middle" font-family="Syne,sans-serif" font-size="7.5" font-weight="700" fill="var(--text-dim)">BACKLOG</text>
+            <text x="160" y="43" text-anchor="middle" font-family="Syne,sans-serif" font-size="7.5" font-weight="700" fill="var(--text-dim)">IN PROGRESS</text>
+            <text x="267" y="43" text-anchor="middle" font-family="Syne,sans-serif" font-size="7.5" font-weight="700" fill="var(--text-dim)">DONE</text>
+
+            <!-- backlog cards -->
+            <rect x="14" y="52"  width="78" height="30" rx="4" fill="var(--bg-2)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="14" y="52"  width="3"  height="30" rx="1.5" fill="#ff4d1c"/>
+            <rect x="20" y="60"  width="50" height="5"  rx="2"   fill="var(--border-2)"/>
+            <rect x="20" y="69"  width="36" height="4"  rx="2"   fill="var(--border)"/>
+
+            <rect x="14" y="90"  width="78" height="30" rx="4" fill="var(--bg-2)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="14" y="90"  width="3"  height="30" rx="1.5" fill="#ffb020"/>
+            <rect x="20" y="98"  width="44" height="5"  rx="2"   fill="var(--border-2)"/>
+            <rect x="20" y="107" width="30" height="4"  rx="2"   fill="var(--border)"/>
+
+            <rect x="14" y="128" width="78" height="30" rx="4" fill="var(--bg-2)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="14" y="128" width="3"  height="30" rx="1.5" fill="#4ddd6a"/>
+            <rect x="20" y="136" width="54" height="5"  rx="2"   fill="var(--border-2)"/>
+            <rect x="20" y="145" width="38" height="4"  rx="2"   fill="var(--border)"/>
+
+            <!-- in progress cards -->
+            <rect x="121" y="52"  width="78" height="30" rx="4" fill="var(--bg-2)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="121" y="52"  width="3"  height="30" rx="1.5" fill="#1a8fff"/>
+            <rect x="127" y="60"  width="48" height="5"  rx="2"   fill="var(--border-2)"/>
+            <rect x="127" y="69"  width="32" height="4"  rx="2"   fill="var(--border)"/>
+
+            <rect x="121" y="90"  width="78" height="30" rx="4" fill="var(--bg-2)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="121" y="90"  width="3"  height="30" rx="1.5" fill="#ff4d1c"/>
+            <rect x="127" y="98"  width="40" height="5"  rx="2"   fill="var(--border-2)"/>
+            <rect x="127" y="107" width="28" height="4"  rx="2"   fill="var(--border)"/>
+
+            <!-- done cards (with green tint) -->
+            <rect x="228" y="52"  width="78" height="30" rx="4" fill="#4ddd6a0f" stroke="#4ddd6a40" stroke-width="1"/>
+            <rect x="228" y="52"  width="3"  height="30" rx="1.5" fill="#4ddd6a"/>
+            <rect x="234" y="60"  width="44" height="5"  rx="2"   fill="#4ddd6a30"/>
+            <rect x="234" y="69"  width="30" height="4"  rx="2"   fill="var(--border)"/>
+
+            <rect x="228" y="90"  width="78" height="30" rx="4" fill="#4ddd6a0f" stroke="#4ddd6a40" stroke-width="1"/>
+            <rect x="228" y="90"  width="3"  height="30" rx="1.5" fill="#4ddd6a"/>
+            <rect x="234" y="98"  width="50" height="5"  rx="2"   fill="#4ddd6a30"/>
+            <rect x="234" y="107" width="34" height="4"  rx="2"   fill="var(--border)"/>
+
+            <!-- arrows between columns -->
+            <path d="M102 75 L111 75" stroke="var(--text-dim)" stroke-width="1.5" stroke-dasharray="2,2" marker-end="url(#a)"/>
+            <path d="M209 75 L218 75" stroke="var(--text-dim)" stroke-width="1.5" stroke-dasharray="2,2" marker-end="url(#a)"/>
+            <defs>
+              <marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6" fill="none" stroke="var(--text-dim)" stroke-width="1"/>
+              </marker>
+            </defs>
+
+            <!-- page title -->
+            <text x="160" y="18" text-anchor="middle" font-family="Syne,sans-serif" font-size="9" font-weight="800" fill="var(--text)">Kanban Workflow</text>
+          </svg>
+          <h3 class="illus-title">How the Board Works</h3>
+          <p class="illus-sub">Each card represents a task. As work progresses, cards move right; from Backlog through to Done.</p>
+        </div>
+        <figcaption class="cap">
+          <strong>Kanban Workflow Diagram</strong>
+          <span class="source">Original SVG artwork created for this project (KanFlow, CS 430).</span>
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <!-- Reading list -->
+    <section class="reading-section" aria-labelledby="reading-h">
+      <h2 id="reading-h">Further Reading</h2>
+      <div class="reading-grid">
+        <a class="read-card" href="https://www.atlassian.com/agile/kanban" target="_blank" rel="noopener noreferrer"><span class="rtag rtag-kanban">Kanban</span><h3 class="read-title">What is Kanban?</h3><p class="read-desc">Atlassian's complete guide - board setup, WIP limits, and Kanban vs Scrum.</p></a>
+        <a class="read-card" href="https://agilemanifesto.org/" target="_blank" rel="noopener noreferrer"><span class="rtag rtag-agile">Agile</span><h3 class="read-title">The Agile Manifesto</h3><p class="read-desc">The original 12 principles, written in 2001 - still the foundation of modern software development.</p></a>
+        <a class="read-card" href="https://www.atlassian.com/agile/kanban/wip-limits" target="_blank" rel="noopener noreferrer"><span class="rtag rtag-teams">Teams</span><h3 class="read-title">WIP Limits Explained</h3><p class="read-desc">Why limiting work-in-progress is the single biggest change a team can make to their flow.</p></a>
+        <a class="read-card" href="https://kanbanize.com/kanban-resources/kanban-analytics/cycle-time-vs-lead-time" target="_blank" rel="noopener noreferrer"><span class="rtag rtag-metrics">Metrics</span><h3 class="read-title">Cycle Time vs Lead Time</h3><p class="read-desc">The two core Kanban metrics - and how to use them to find and fix bottlenecks early.</p></a>
+        <a class="read-card" href="https://kanbanize.com/kanban-resources/getting-started/what-is-kanban" target="_blank" rel="noopener noreferrer"><span class="rtag rtag-kanban">Kanban</span><h3 class="read-title">Kanban Origins</h3><p class="read-desc">How Toyota invented Kanban on the factory floor in the 1940s, and how software teams adapted it decades later.</p></a>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project. All media assets are copyright-safe and properly attributed.</footer>
+</main>
+
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<script type="module">
+  import { buildSidebar }                         from "./sidebar.js";
+  import { requireAuth, initSignOut,
+           initTheme, initSidebar }               from "./shared.js";
+
+  document.getElementById("sidebar-root").innerHTML = buildSidebar("resources");
+  initTheme(); initSidebar(); initSignOut();
+  requireAuth(() => {});
+</script>
+</body>
+</html>

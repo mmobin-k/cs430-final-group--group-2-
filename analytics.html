@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KanFlow - Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .sum-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:20px; }
+    .sum-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; }
+    .sum-n { font-family:var(--font-d); font-size:1.8rem; font-weight:800; line-height:1; }
+    .sum-l { font-size:.68rem; color:var(--text-dim); margin-top:3px; text-transform:uppercase; letter-spacing:.06em; }
+    .charts-grid { display:grid; grid-template-columns:1fr 250px; gap:14px; }
+    .chart-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; }
+    .chart-card-full { grid-column:1/-1; }
+    .chart-label { font-family:var(--font-d); font-size:.76rem; font-weight:700; color:var(--text-sub); margin-bottom:14px; text-transform:uppercase; letter-spacing:.06em; }
+    canvas { max-width:100%; display:block; }
+    @media(max-width:780px){ .charts-grid{ grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to analytics</a>
+<div id="sidebar-root"></div>
+<main class="page-area" id="main">
+  <div class="page-topbar">
+    <div><h1 class="page-heading">Analytics</h1><p class="page-sub">Live charts update automatically as tasks change on the board.</p></div>
+  </div>
+  <div class="page-content">
+    <div class="sum-row" role="region" aria-label="Sprint summary">
+      <div class="sum-card"><div class="sum-n" id="an-total">--</div><div class="sum-l">Total Tasks</div></div>
+      <div class="sum-card"><div class="sum-n" id="an-done"  style="color:var(--lime)">--</div><div class="sum-l">Completed</div></div>
+      <div class="sum-card"><div class="sum-n" id="an-prog"  style="color:var(--amber)">--</div><div class="sum-l">In Progress</div></div>
+      <div class="sum-card"><div class="sum-n" id="an-pct"   style="color:var(--coral)">--</div><div class="sum-l">Sprint %</div></div>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card" role="img" aria-label="Bar chart showing task count per column">
+        <p class="chart-label">Tasks by Status</p>
+        <canvas id="c-status" width="460" height="220" aria-label="Bar chart: tasks per status column"></canvas>
+      </div>
+      <div class="chart-card" role="img" aria-label="Donut chart showing priority split">
+        <p class="chart-label">Priority Split</p>
+        <canvas id="c-priority" width="210" height="220" aria-label="Donut chart: high, medium, low priority breakdown"></canvas>
+      </div>
+      <div class="chart-card chart-card-full" role="img" aria-label="Line chart showing sprint velocity">
+        <p class="chart-label">Sprint Velocity</p>
+        <canvas id="c-velocity" width="720" height="190" aria-label="Line chart: tasks completed per day this week"></canvas>
+      </div>
+      <div class="chart-card chart-card-full" role="img" aria-label="Horizontal bar showing workload per assignee">
+        <p class="chart-label">Workload by Assignee</p>
+        <canvas id="c-workload" width="720" height="150" aria-label="Horizontal bar chart: task count per team member, synced from Team page"></canvas>
+      </div>
+    </div>
+  </div>
+  <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project</footer>
+</main>
+<div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<script type="module">
+  import { buildSidebar }                         from "./sidebar.js";
+  import { requireAuth,initSignOut,initTheme,initSidebar,app } from "./shared.js";
+  import { getFirestore,collection,onSnapshot }   from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+  document.getElementById("sidebar-root").innerHTML = buildSidebar("analytics");
+  initTheme(); initSidebar(); initSignOut();
+
+  const db = getFirestore(app);
+  function cv(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+  let liveTasks   = [];
+  let liveMembers = [];
+
+  requireAuth(user => {
+    onSnapshot(collection(db,"users",user.uid,"tasks"), snap => {
+      liveTasks = snap.docs.map(d=>({id:d.id,...d.data()}));
+      redrawAll();
+    });
+
+    onSnapshot(collection(db,"users",user.uid,"members"), snap => {
+      liveMembers = snap.docs.map(d=>({id:d.id,...d.data()}));
+      // Resize canvas height to fit member count dynamically
+      const c = document.getElementById("c-workload");
+      c.height = Math.max(liveMembers.length * 42 + 16, 80);
+      redrawAll();
+    });
+  });
+
+  function redrawAll() {
+    const tasks = liveTasks;
+    const total = tasks.length, done = tasks.filter(t=>t.status==="done").length;
+    const prog  = tasks.filter(t=>t.status==="inprogress").length;
+    const pct   = total ? Math.round((done/total)*100) : 0;
+    document.getElementById("an-total").textContent = total;
+    document.getElementById("an-done").textContent  = done;
+    document.getElementById("an-prog").textContent  = prog;
+    document.getElementById("an-pct").textContent   = pct+"%";
+    drawBar(tasks); drawDonut(tasks); drawLine(tasks); drawWorkload(tasks);
+  }
+
+  function drawBar(tasks){
+    const c=document.getElementById("c-status"),ctx=c.getContext("2d"),W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+    const keys=["backlog","todo","inprogress","review","done"];
+    const lbls=["Backlog","To Do","In Prog","Review","Done"];
+    const clrs=[cv("--text-dim"),cv("--sky"),cv("--amber"),cv("--purple"),cv("--lime")];
+    const data=keys.map(k=>tasks.filter(t=>t.status===k).length);
+    const mx=Math.max(...data,1);
+    const pL=42,pR=14,pT=18,pB=42,cW=W-pL-pR,cH=H-pT-pB;
+    const bW=(cW/data.length)*.55,gap=(cW/data.length)*.45;
+    const tc=cv("--text-sub"),gc=cv("--border");
+    for(let i=0;i<=4;i++){
+      const y=pT+cH-(i/4)*cH;
+      ctx.strokeStyle=gc;ctx.lineWidth=1;ctx.setLineDash([3,3]);
+      ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle=tc;ctx.font="10px DM Sans,sans-serif";ctx.textAlign="right";
+      ctx.fillText(Math.round((i/4)*mx),pL-4,y+4);
+    }
+    data.forEach((v,i)=>{
+      const x=pL+(cW/data.length)*i+gap/2,bH=v>0?(v/mx)*cH:2,y=pT+cH-bH;
+      ctx.fillStyle=clrs[i];
+      ctx.beginPath();
+      if(bH>6){ctx.moveTo(x,y+5);ctx.arcTo(x,y,x+5,y,5);ctx.lineTo(x+bW-5,y);ctx.arcTo(x+bW,y,x+bW,y+5,5);ctx.lineTo(x+bW,y+bH);ctx.lineTo(x,y+bH);ctx.closePath();}
+      else{ctx.rect(x,y,bW,bH);}
+      ctx.fill();
+      if(v>0){ctx.fillStyle=tc;ctx.font="bold 11px Syne,sans-serif";ctx.textAlign="center";ctx.fillText(v,x+bW/2,y-5);}
+      ctx.fillStyle=tc;ctx.font="10px DM Sans,sans-serif";ctx.textAlign="center";ctx.fillText(lbls[i],x+bW/2,pT+cH+15);
+    });
+  }
+
+  function drawDonut(tasks){
+    const c=document.getElementById("c-priority"),ctx=c.getContext("2d"),W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+    const data=[tasks.filter(t=>t.priority==="high").length,tasks.filter(t=>t.priority==="medium").length,tasks.filter(t=>t.priority==="low").length];
+    const clrs=[cv("--coral"),cv("--amber"),cv("--lime")];
+    const lbls=["High","Med","Low"];
+    const total=data.reduce((a,b)=>a+b,0)||1;
+    const cx=W/2,cy=H/2-14,R=Math.min(W,H)*.35,r=R*.53;
+    let angle=-Math.PI/2;
+    data.forEach((v,i)=>{
+      if(!v)return;
+      const sw=(v/total)*Math.PI*2;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,R,angle,angle+sw);ctx.closePath();
+      ctx.fillStyle=clrs[i];ctx.fill();angle+=sw;
+    });
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=cv("--bg-card");ctx.fill();
+    ctx.fillStyle=cv("--text");ctx.font="bold 16px Syne,sans-serif";ctx.textAlign="center";ctx.fillText(total,cx,cy+5);
+    ctx.fillStyle=cv("--text-dim");ctx.font="9px DM Sans,sans-serif";ctx.fillText("tasks",cx,cy+17);
+    lbls.forEach((l,i)=>{
+      const x=(W/lbls.length)*i+8,y=H-26;
+      ctx.fillStyle=clrs[i];ctx.fillRect(x,y,9,9);
+      ctx.fillStyle=cv("--text-sub");ctx.font="9px DM Sans,sans-serif";ctx.textAlign="left";ctx.fillText(l,x+13,y+8);
+    });
+  }
+
+  function drawLine(tasks){
+    const c=document.getElementById("c-velocity"),ctx=c.getContext("2d"),W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+    const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    const base=[2,3,4,3,5,2,1];
+    const done=tasks.filter(t=>t.status==="done").length;
+    const pts=days.map((d,i)=>({d,v:Math.min(base[i],done)}));
+    const mx=Math.max(...pts.map(p=>p.v),1);
+    const pL=38,pR=14,pT=14,pB=34,cW=W-pL-pR,cH=H-pT-pB;
+    const tc=cv("--text-sub"),gc=cv("--border"),lc=cv("--sky");
+    for(let i=0;i<=4;i++){
+      const y=pT+cH-(i/4)*cH;
+      ctx.strokeStyle=gc;ctx.setLineDash([3,3]);ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle=tc;ctx.font="9px DM Sans,sans-serif";ctx.textAlign="right";
+      ctx.fillText(Math.round((i/4)*mx),pL-3,y+4);
+    }
+    const sX=cW/(pts.length-1);
+    pts.forEach((p,i)=>{ctx.fillStyle=tc;ctx.font="9px DM Sans,sans-serif";ctx.textAlign="center";ctx.fillText(p.d,pL+i*sX,pT+cH+14);});
+    const grad=ctx.createLinearGradient(0,pT,0,pT+cH);
+    grad.addColorStop(0,lc+"40");grad.addColorStop(1,lc+"00");
+    ctx.beginPath();
+    pts.forEach((p,i)=>{const x=pL+i*sX,y=pT+cH-(p.v/mx)*cH;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.lineTo(pL+(pts.length-1)*sX,pT+cH);ctx.lineTo(pL,pT+cH);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+    ctx.beginPath();ctx.strokeStyle=lc;ctx.lineWidth=2.5;ctx.lineJoin="round";ctx.lineCap="round";
+    pts.forEach((p,i)=>{const x=pL+i*sX,y=pT+cH-(p.v/mx)*cH;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});ctx.stroke();
+    pts.forEach((p,i)=>{
+      const x=pL+i*sX,y=pT+cH-(p.v/mx)*cH;
+      ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fillStyle=lc;ctx.fill();
+      ctx.strokeStyle=cv("--bg-card");ctx.lineWidth=2;ctx.stroke();
+    });
+  }
+
+  function drawWorkload(tasks){
+    const c=document.getElementById("c-workload"),ctx=c.getContext("2d"),W=c.width,H=c.height;
+    ctx.clearRect(0,0,W,H);
+
+    // Use live members; fall back to a placeholder if none added yet
+    const members = liveMembers.length > 0 ? liveMembers : [];
+    if(members.length === 0){
+      ctx.fillStyle=cv("--text-dim");ctx.font="13px DM Sans,sans-serif";ctx.textAlign="center";
+      ctx.fillText("No team members yet. Add members on the Team page.",W/2,H/2+5);
+      return;
+    }
+
+    // Rotate through these CSS color vars
+    const palette=[cv("--coral"),cv("--sky"),cv("--lime"),cv("--purple"),cv("--amber"),cv("--text-sub")];
+    const data    = members.map(m => tasks.filter(t => t.assignee === m.id).length);
+    const mx      = Math.max(...data, 1);
+    const pL=80,pR=36,pT=8,pB=8,cW=W-pL-pR,cH=H-pT-pB;
+    const rowH    = cH / members.length;
+    const bH      = rowH * 0.55;
+    const gap     = rowH * 0.45;
+
+    data.forEach((v,i) => {
+      const y   = pT + rowH*i + gap/2;
+      const bW  = v > 0 ? (v/mx)*cW : 2;
+      const clr = palette[i % palette.length];
+
+      ctx.fillStyle = clr;
+      ctx.beginPath();
+      if(bW > 6){
+        ctx.moveTo(pL,y);ctx.lineTo(pL+bW-5,y);
+        ctx.arcTo(pL+bW,y,pL+bW,y+5,5);
+        ctx.lineTo(pL+bW,y+bH-5);
+        ctx.arcTo(pL+bW,y+bH,pL+bW-5,y+bH,5);
+        ctx.lineTo(pL,y+bH);ctx.closePath();
+      } else {
+        ctx.rect(pL,y,bW,bH);
+      }
+      ctx.fill();
+
+      // Member name label
+      ctx.fillStyle=cv("--text-sub");ctx.font="11px DM Sans,sans-serif";ctx.textAlign="right";
+      ctx.fillText(members[i].name, pL-6, y+bH/2+4);
+
+      // Task count
+      if(v > 0){
+        ctx.fillStyle=cv("--text-sub");ctx.font="bold 10px Syne,sans-serif";ctx.textAlign="left";
+        ctx.fillText(v, pL+bW+5, y+bH/2+4);
+      }
+    });
+  }
+</script>
+</body>
+</html>
