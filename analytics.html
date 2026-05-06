@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KanFlow - Analytics</title>
+  <title>KanFlow Analytics</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -24,10 +24,11 @@
 <a href="#main" class="skip-link">Skip to analytics</a>
 <div id="sidebar-root"></div>
 <main class="page-area" id="main">
-  <div class="page-topbar">
-    <div><h1 class="page-heading">Analytics</h1><p class="page-sub">Live charts update automatically as tasks change on the board.</p></div>
-  </div>
+  <header class="page-topbar" role="banner">
+    <div><h1 class="page-heading">Analytics</h1><p class="page-sub">Live charts that update automatically as tasks change on the board.</p></div>
+  </header>
   <div class="page-content">
+    <section aria-label="Analytics Dashboard">
     <div class="sum-row" role="region" aria-label="Sprint summary">
       <div class="sum-card"><div class="sum-n" id="an-total">--</div><div class="sum-l">Total Tasks</div></div>
       <div class="sum-card"><div class="sum-n" id="an-done"  style="color:var(--lime)">--</div><div class="sum-l">Completed</div></div>
@@ -53,6 +54,7 @@
       </div>
     </div>
   </div>
+  </section>
   <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project</footer>
 </main>
 <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -201,7 +203,10 @@
     const palette=[cv("--coral"),cv("--sky"),cv("--lime"),cv("--purple"),cv("--amber"),cv("--text-sub")];
     const data    = members.map(m => tasks.filter(t => t.assignee === m.id).length);
     const mx      = Math.max(...data, 1);
-    const pL=80,pR=36,pT=8,pB=8,cW=W-pL-pR,cH=H-pT-pB;
+    ctx.font="11px DM Sans,sans-serif";
+    const maxNameW = Math.max(...members.map(m => ctx.measureText(m.name).width));
+    const pL = Math.ceil(maxNameW) + 14;
+    const pR=36,pT=8,pB=8,cW=W-pL-pR,cH=H-pT-pB;
     const rowH    = cH / members.length;
     const bH      = rowH * 0.55;
     const gap     = rowH * 0.45;

@@ -79,7 +79,7 @@ export function buildSidebar(activePage) {
     </button>
     <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true"></div>
 
-    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+    <nav class="sidebar" id="sidebar" aria-label="Main navigation">
       <a href="index.html" class="sidebar-logo" aria-label="KanFlow home">
         <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="2" y="2" width="10" height="36" rx="3" fill="var(--coral)"/>
@@ -89,9 +89,9 @@ export function buildSidebar(activePage) {
         <span class="sidebar-logo-text">Kan<span>Flow</span></span>
       </a>
 
-      <nav class="sidebar-nav" aria-label="Site navigation">
+      <ul class="sidebar-nav" role="list">
         ${navHtml}
-      </nav>
+      </ul>
 
       <div class="sidebar-user">
         <div class="sidebar-user-info">
@@ -108,6 +108,6 @@ export function buildSidebar(activePage) {
           <button class="btn-signout" id="signout-btn" aria-label="Sign out of KanFlow">Sign Out</button>
         </div>
       </div>
-    </aside>
+    </nav>
   `;
 }

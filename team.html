@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KanFlow - Team</title>
+  <title>KanFlow Team</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -78,9 +78,9 @@
 <a href="#main" class="skip-link">Skip to team</a>
 <div id="sidebar-root"></div>
 <main class="page-area" id="main">
-  <div class="page-topbar">
-    <div><h1 class="page-heading">Team</h1><p class="page-sub">Workload overview; task counts sync live from the board.</p></div>
-  </div>
+  <header class="page-topbar" role="banner">
+    <div><h1 class="page-heading">Team</h1><p class="page-sub">Workload overview - task counts sync live from the board.</p></div>
+  </header>
   <div class="page-content">
 
     <div class="ts-row" aria-label="Team summary" role="region">
@@ -102,6 +102,7 @@
     </div>
 
   </div>
+  </section>
   <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project</footer>
 </main>
 <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -194,7 +195,8 @@
       const el = document.createElement("div");
       el.role = "listitem";
       el.innerHTML = `
-        <article class="member-card" style="--accent-color:${m.color}" aria-label="${m.name} - ${m.role}">
+        <section aria-label="Team Members">
+    <article class="member-card" style="--accent-color:${m.color}" aria-label="${m.name} - ${m.role}">
           <button class="remove-btn" data-id="${m.id}" aria-label="Remove ${m.name}" title="Remove member">x</button>
           <div class="av" aria-hidden="true">${m.initial}</div>
           <h2 class="m-name">${m.name}</h2>

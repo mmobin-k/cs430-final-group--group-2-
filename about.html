@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KanFlow - About</title>
+  <title>KanFlow About</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -69,10 +69,11 @@
 <a href="#main" class="skip-link">Skip to about</a>
 <div id="sidebar-root"></div>
 <main class="page-area" id="main">
-  <div class="page-topbar">
+  <header class="page-topbar" role="banner">
     <div><h1 class="page-heading">About</h1><p class="page-sub">What KanFlow is, how it was built, and what it runs on.</p></div>
-  </div>
+  </header>
   <div class="page-content">
+    <section aria-label="About KanFlow">
     <div class="about-grid">
 
       <!-- What is KanFlow -->
@@ -81,10 +82,9 @@
         <p>KanFlow is an interactive Kanban board web app built for the CS 430 Internet Multimedia Programming semester group project. It uses HTML5, CSS3, and vanilla JavaScript with Firebase Auth and Firestore for authentication and real-time cloud data storage.</p>
         <p>Tasks live across five workflow columns - Backlog, To Do, In Progress, Review, and Done. Every drag, edit, and delete syncs live to Firestore, so changes appear instantly across all open sessions.</p>
         <div class="members" aria-label="Project team">
-          <div class="memb"><div class="memb-av" style="background:#ff4d1c" aria-hidden="true">A</div><div><div class="memb-n">Muhammad Mobin</div><div class="memb-r">Frontend Dev</div></div></div>
-          <div class="memb"><div class="memb-av" style="background:#1a8fff" aria-hidden="true">S</div><div><div class="memb-n">Aashish Joshi</div><div class="memb-r">Backend Dev</div></div></div>
-          <div class="memb"><div class="memb-av" style="background:#4ddd6a" aria-hidden="true">T</div><div><div class="memb-n">Natalia Criollo</div><div class="memb-r">UX Designer</div></div></div>
-          <div class="memb"><div class="memb-av" style="background:#8b5cf6" aria-hidden="true">J</div><div><div class="memb-n">Muhammad Mobin</div><div class="memb-r">Project Manager</div></div></div>
+          <div class="memb"><div class="memb-av" style="background:#ff4d1c" aria-hidden="true">A</div><div><div class="memb-n">Aashish Joshi</div><div class="memb-r">Frontend Dev</div></div></div>
+          <div class="memb"><div class="memb-av" style="background:#1a8fff" aria-hidden="true">S</div><div><div class="memb-n">Natalia Criollo</div><div class="memb-r">UX Designer</div></div></div>
+          <div class="memb"><div class="memb-av" style="background:#4ddd6a" aria-hidden="true">T</div><div><div class="memb-n">Muhammad Mobin</div><div class="memb-r">Backend Dev - Project Manager</div></div></div>
         </div>
       </div>
 
@@ -108,17 +108,17 @@
         <div class="credits">
           <div class="credit">
             <span class="credit-t">Video</span>
-            <span class="credit-n">"simpleshow explains the Agile Company"; simpleshow GmbH</span>
+            <span class="credit-n">"simpleshow explains the Agile Company" via simpleshow GmbH</span>
             <a href="https://youtu.be/VtFJhHEieHM" class="credit-l" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
           </div>
           <div class="credit">
             <span class="credit-t">Audio</span>
-            <span class="credit-n">SoundHelix Song 1; ree use license</span>
+            <span class="credit-n">SoundHelix Song 1 via free use license</span>
             <a href="https://www.soundhelix.com" class="credit-l" target="_blank" rel="noopener noreferrer">soundhelix.com ↗</a>
           </div>
           <div class="credit">
             <span class="credit-t">SVG</span>
-            <span class="credit-n">Logo, workflow diagram, and all illustrations; created with SVG Editor</span>
+            <span class="credit-n">Logo, workflow diagram, and all illustrations created with SVG Editor</span>
             <a href="https://svgeditoronline.com" class="credit-l" target="_blank" rel="noopener noreferrer">svgeditoronline.com ↗</a>
           </div>
           <div class="credit">
@@ -128,7 +128,7 @@
           </div>
           <div class="credit">
             <span class="credit-t">Fonts</span>
-            <span class="credit-n">Syne + DM Sans via Google Fonts; Open Font License</span>
+            <span class="credit-n">Syne + DM Sans via Google Fonts via Open Font License</span>
             <a href="https://fonts.google.com" class="credit-l" target="_blank" rel="noopener noreferrer">fonts.google.com ↗</a>
           </div>
         </div>
@@ -136,7 +136,8 @@
 
     </div>
   </div>
-  <footer class="site-footer" role="contentinfo">KanFlow, a CS 430 Internet Multimedia Programming. No user data is sold or shared.</footer>
+  </section>
+  <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project.</footer>
 </main>
 <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <script type="module">

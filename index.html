@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KanFlow - Board</title>
+  <title>KanFlow Board</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -59,7 +59,7 @@
     .player-vol { width: 70px; opacity: 1 !important; height: 3px !important; accent-color: var(--coral); }
     @media (max-width: 860px) { .player-bar { padding-left: 16px; padding-right: 16px; } }
 
-    /* ── Board styles ── */
+    /* ── Board-specific styles ── */
 
     /* stat bar below topbar */
     .stat-bar {
@@ -252,7 +252,7 @@
     }
     .card.in { animation: cardIn .18s cubic-bezier(.34,1.4,.64,1) both; }
 
-    /* Modal */
+    /* ── Modal ── */
     .modal-bg {
       position: fixed; inset: 0;
       background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
@@ -319,7 +319,7 @@
 <div id="sidebar-root"></div>
 
 <main class="page-area">
-  <div class="page-topbar">
+  <header class="page-topbar" role="banner">
     <div>
       <h1 class="page-heading">Sprint Board</h1>
       <p class="page-sub">Drag tasks between columns, or use arrow keys. Press <kbd>N</kbd> for a new task.</p>
@@ -327,7 +327,7 @@
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <button class="btn btn-primary btn-sm" id="new-btn" aria-label="Create a new task">+ New Task</button>
     </div>
-  </div>
+  </header>
 
   <!-- Persistent audio player bar -->
   <div class="player-bar" id="player-bar" role="region" aria-label="Background music player">
@@ -392,7 +392,8 @@
   </div>
 
   <!-- Kanban columns -->
-  <div class="board-wrap" role="region" aria-label="Kanban board">
+  <section aria-label="Kanban Board" class="board-section">
+    <div class="board-wrap" role="region" aria-label="Kanban board">
     <div class="col" id="col-backlog"    data-status="backlog"    tabindex="0" aria-label="Backlog column">
       <div class="col-head"><div class="col-head-left"><span class="col-dot" aria-hidden="true"></span><h2 class="col-name">Backlog</h2></div><span class="col-badge" id="b-backlog">0</span></div>
       <ul class="cards" id="list-backlog" role="list" aria-label="Backlog tasks"></ul>
@@ -420,7 +421,8 @@
     </div>
   </div>
 
-  <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project. Data stored in Firebase. No ads, no tracking.</footer>
+  </section>
+  <footer class="site-footer" role="contentinfo">KanFlow - CS 430 Group Project.</footer>
 </div>
 
 <!-- task modal -->

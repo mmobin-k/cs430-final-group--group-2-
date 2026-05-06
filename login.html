@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KanFlow - Sign In</title>
+  <title>KanFlow Sign In</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
   <style>
     :root {
       --coral:  #ff4d1c;
@@ -36,7 +37,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Left splash */
+    /* ── Left splash ── */
     .splash {
       flex: 1; display: flex; flex-direction: column;
       justify-content: center; padding: 60px;
@@ -110,9 +111,9 @@
       font-size: .8rem; flex-shrink: 0;
     }
 
-    /* Right form panel */
+    /* ── Right form panel ── */
     .form-panel {
-      width: 460px; flex-shrink: 0;
+      flex: 1;
       background: var(--card);
       border-left: 1px solid var(--border);
       display: flex; flex-direction: column; justify-content: center;
@@ -220,12 +221,60 @@
     .form-foot { margin-top: 18px; font-size: .76rem; color: var(--muted); text-align: center; }
     .link-btn { color: var(--coral); background: none; border: none; cursor: pointer; font-size: .76rem; padding: 0; }
 
+
+    /* skip link */
+    .skip-link {
+      position: absolute; top: -100px; left: 0;
+      background: var(--coral); color: #fff;
+      padding: 8px 16px; z-index: 9999;
+      font-family: var(--font-b); font-size: .9rem;
+      border-radius: 0 0 8px 0; text-decoration: none;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* sr-only */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+
+    /* hidden header */
+    .site-header { display: none; }
+
+    /* right panel wrapper */
+    .right-panel {
+      display: flex; flex-direction: column;
+      width: 460px; flex-shrink: 0;
+    }
+
+    /* site footer on login */
+    .site-footer {
+      background: var(--card);
+      border-left: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      padding: 12px 42px;
+      font-size: .72rem; color: var(--muted);
+      font-family: var(--font-b);
+    }
+
+    @media (max-width: 860px) {
+      .right-panel { width: 100%; }
+      .site-footer { border-left: none; }
+    }
+
     :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
     @media (max-width: 860px) { .splash { display: none; } .form-panel { width: 100%; border-left: none; } }
     @media (max-width: 480px) { .form-panel { padding: 36px 20px; } }
   </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header" aria-label="KanFlow site header">
+  <span class="sr-only">KanFlow - Sign In</span>
+</header>
 
 <!-- Left decorative splash -->
 <div class="splash" aria-hidden="true">
@@ -246,31 +295,33 @@
       Your team.<br/>
       <span>In flow.</span>
     </h1>
-    <p class="splash-sub">A Kanban workspace that keeps everyone on the same page; drag tasks, track progress, and ship together.</p>
+    <p class="splash-sub">A Kanban workspace that keeps everyone on the same page where you can drag tasks, track progress, and ship together.</p>
 
     <div class="feature-list">
       <div class="feat">
         <div class="feat-dot" style="background:rgba(255,77,28,.15);color:var(--coral)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="9,1 2,9 8,9 7,15 14,7 8,7"/></svg></div>
-        Real-time sync
+        Real-time sync where every change is instant across your team
       </div>
       <div class="feat">
         <div class="feat-dot" style="background:rgba(77,221,106,.15);color:var(--lime)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="9" width="3" height="6"/><rect x="6" y="5" width="3" height="10"/><rect x="11" y="1" width="3" height="14"/></svg></div>
-        Live analytics with bar
+        Live analytics with bar, donut, and velocity charts
       </div>
       <div class="feat">
         <div class="feat-dot" style="background:rgba(26,143,255,.15);color:var(--sky)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="7"/><circle cx="8" cy="8" r="3"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg></div>
-        Priority labels
+        Priority labels, assignees, due dates, tags
       </div>
       <div class="feat">
         <div class="feat-dot" style="background:rgba(255,176,32,.15);color:var(--amber)"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="10" height="8" rx="2"/><path d="M5 7V5a3 3 0 0 1 6 0v2"/></svg></div>
-        Secure Firebase auth
+        Secure Firebase authentication so your data stays yours
       </div>
     </div>
   </div>
 </div>
 
 <!-- Right form -->
-<main class="form-panel" role="main" aria-label="Sign in to KanFlow">
+<div class="right-panel">
+<main class="form-panel" id="main-content" aria-label="Sign in to KanFlow">
+  <section aria-label="Authentication forms">
   <div class="tabs" role="tablist">
     <button class="tab active" id="tab-in" role="tab" aria-selected="true"  aria-controls="pnl-in">Sign In</button>
     <button class="tab"        id="tab-up" role="tab" aria-selected="false" aria-controls="pnl-up">Create Account</button>
@@ -345,6 +396,9 @@
     <p class="form-foot">Already have an account? <button class="link-btn" id="sw-in">Sign in →</button></p>
   </div>
 </main>
+  </section>
+  <footer class="site-footer" role="contentinfo">KanFlow &mdash; CS 430 Group Project</footer>
+</div>
 
 <script type="module">
   import { initializeApp }                        from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
