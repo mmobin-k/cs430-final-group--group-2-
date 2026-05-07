@@ -84,6 +84,7 @@ kanflow/
 ├── sidebar.js        # Shared sidebar component
 ├── shared.js         # Firebase init, auth, theme, toast helpers
 └── shared.css        # Shared styles and design tokens
+└── favicon.png       # Pixel icon representing the website in browser tabs
 ```
 
 ---
