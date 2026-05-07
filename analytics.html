@@ -60,8 +60,8 @@
 </main>
 <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <script type="module">
-  import { buildSidebar }                         from "js/sidebar.js";
-  import { requireAuth,initSignOut,initTheme,initSidebar,app } from "js/shared.js";
+  import { buildSidebar }                         from "./js/sidebar.js";
+  import { requireAuth,initSignOut,initTheme,initSidebar,app } from "./js/shared.js";
   import { getFirestore,collection,onSnapshot }   from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
   document.getElementById("sidebar-root").innerHTML = buildSidebar("analytics");
