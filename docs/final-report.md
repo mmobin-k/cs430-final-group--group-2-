@@ -380,10 +380,10 @@ We split the work based on each person's strengths, with everyone taking ownersh
 
 | Member | Primary Role | Key Contributions |
 |---|---|---|
-|  | Frontend Development | Board page layout and CSS Grid column system; task card components and priority styling; drag-and-drop implementation and Firestore status sync; new task modal, form validation, and edit/delete logic; dark/light theme toggle and shared CSS variables |
-|  | Backend Development | Firebase project setup, Auth configuration, and Firestore security rules; `shared.js` module: `requireAuth`, `initTheme`, `initSignOut`, `initSidebar`; real-time `onSnapshot` listeners across all pages; Firebase Hosting deployment pipeline and versioning |
-|  | UX / Design | Design system: color palette, typography scale, spacing tokens; SVG illustrations: login logo, resources workflow diagram, principles card; Login, About, Resources, and Contact page layout and content; responsive design and mobile breakpoints across all pages |
-|  | QA & Integration | Analytics page: all four Canvas 2D charts and live data wiring; team manager page: member CRUD, avatar generation, task count sync; accessibility audit: ARIA labels, keyboard navigation, focus management; cross-browser testing and performance review |
+| Aashish Joshi | Frontend Development | Board page layout and CSS Grid column system; task card components and priority styling; drag-and-drop implementation and Firestore status sync; new task modal, form validation, and edit/delete logic; dark/light theme toggle and shared CSS variables |
+| Muhammad Mobin | Backend Development | Firebase project setup, Auth configuration, and Firestore security rules; `shared.js` module: `requireAuth`, `initTheme`, `initSignOut`, `initSidebar`; real-time `onSnapshot` listeners across all pages; Firebase Hosting deployment pipeline and versioning |
+| Natalia Criollo | UX / Design | Design system: color palette, typography scale, spacing tokens; SVG illustrations: login logo, resources workflow diagram, principles card; Login, About, Resources, and Contact page layout and content; responsive design and mobile breakpoints across all pages |
+| Muhammad Mobin | QA & Integration | Analytics page: all four Canvas 2D charts and live data wiring; team manager page: member CRUD, avatar generation, task count sync; accessibility audit: ARIA labels, keyboard navigation, focus management; cross-browser testing and performance review |
 
 ### 8.2 Shared Responsibilities
 
