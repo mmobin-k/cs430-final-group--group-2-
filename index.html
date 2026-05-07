@@ -481,10 +481,10 @@
 <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script type="module">
-  import { buildSidebar }                       from "js/sidebar.js";
+  import { buildSidebar }                       from "./js/sidebar.js";
   import { requireAuth, initSignOut,
            initTheme, initSidebar, showToast,
-           app }                                from "js/shared.js";
+           app }                                from "./js/shared.js";
   import { getFirestore, collection, doc,
            addDoc, updateDoc, deleteDoc,
            onSnapshot, serverTimestamp }        from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
