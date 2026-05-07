@@ -142,9 +142,9 @@
 </main>
 <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <script type="module">
-  import { buildSidebar }                from "js/sidebar.js";
+  import { buildSidebar }                from "./js/sidebar.js";
   import { requireAuth, initSignOut,
-           initTheme, initSidebar }      from "js/shared.js";
+           initTheme, initSidebar }      from "./js/shared.js";
 
   document.getElementById("sidebar-root").innerHTML = buildSidebar("about");
   initTheme(); initSidebar(); initSignOut();
