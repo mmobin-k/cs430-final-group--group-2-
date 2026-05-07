@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shared.css" />
+  <link rel="icon" type="image/x-icon" href="favicon.png" />
   <style>
     .add-member-row {
       display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
@@ -136,7 +137,6 @@
     const membersRef = collection(db, "users", user.uid, "members");
     const tasksRef   = collection(db, "users", user.uid, "tasks");
 
-    // Live listeners
     onSnapshot(membersRef, snap => {
       MEMBERS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       renderAll();
@@ -144,10 +144,9 @@
 
     onSnapshot(tasksRef, snap => {
       tasks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      updateStats();
+      renderAll();
     });
 
-    // Add member button
     document.getElementById("add-member-btn").onclick = async () => {
       const nameEl = document.getElementById("new-name");
       const roleEl = document.getElementById("new-role");
@@ -160,15 +159,38 @@
       nameEl.value = ""; roleEl.value = "";
     };
 
-    // Remove member
     document.getElementById("team-grid").addEventListener("click", async e => {
-      const btn = e.target.closest(".remove-btn");
-      if (!btn) return;
-      const id = btn.dataset.id;
-      if (!confirm("Remove this team member?")) return;
-      await deleteDoc(doc(db, "users", user.uid, "members", id));
+      // Remove
+      const removeBtn = e.target.closest(".remove-btn");
+      if (removeBtn) {
+        const id = removeBtn.dataset.id;
+        if (!confirm("Remove this team member?")) return;
+        await deleteDoc(doc(db, "users", user.uid, "members", id));
+        return;
+      }
+
+      // Edit
+      const editBtn = e.target.closest(".edit-btn");
+      if (!editBtn) return;
+      const id     = editBtn.dataset.id;
+      const member = MEMBERS.find(m => m.id === id);
+      if (!member) return;
+
+      const newName = prompt("Edit name:", member.name);
+      if (newName === null) return;
+      const newRole = prompt("Edit role:", member.role || "");
+      if (newRole === null) return;
+
+      if (!newName.trim()) { alert("Name cannot be empty."); return; }
+      await setDoc(doc(db, "users", user.uid, "members", id), {
+        ...member,
+        name:    newName.trim(),
+        role:    newRole.trim() || "Team Member",
+        initial: newName.trim().charAt(0).toUpperCase(),
+      });
     });
-  });
+
+  }); // ← closes requireAuth
 
   function renderAll() {
     const grid = document.getElementById("team-grid");
@@ -195,8 +217,8 @@
       const el = document.createElement("div");
       el.role = "listitem";
       el.innerHTML = `
-        <section aria-label="Team Members">
-    <article class="member-card" style="--accent-color:${m.color}" aria-label="${m.name} - ${m.role}">
+        <article class="member-card" style="--accent-color:${m.color}" aria-label="${m.name} - ${m.role}">
+          <button class="edit-btn" data-id="${m.id}" aria-label="Edit ${m.name}" title="Edit member" style="position:absolute;top:10px;left:10px;background:none;border:none;color:var(--text-dim);font-size:.85rem;cursor:pointer;width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;">✎</button>
           <button class="remove-btn" data-id="${m.id}" aria-label="Remove ${m.name}" title="Remove member">x</button>
           <div class="av" aria-hidden="true">${m.initial}</div>
           <h2 class="m-name">${m.name}</h2>
