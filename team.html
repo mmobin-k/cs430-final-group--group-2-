@@ -6,8 +6,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="shared.css" />
-  <link rel="icon" type="image/x-icon" href="favicon.png" />
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="icon" type="image/x-icon" href="images/favicon.png" />
   <style>
     .add-member-row {
       display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
@@ -109,9 +109,9 @@
 <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script type="module">
-  import { buildSidebar }                         from "./sidebar.js";
+  import { buildSidebar }                         from "js/sidebar.js";
   import { requireAuth, initSignOut,
-           initTheme, initSidebar, app }           from "./shared.js";
+           initTheme, initSidebar, app }           from "js/shared.js";
   import { getFirestore, collection, onSnapshot,
            doc, setDoc, deleteDoc }                from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
