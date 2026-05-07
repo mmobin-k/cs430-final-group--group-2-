@@ -14,9 +14,9 @@ A real-time Kanban board web app built for the CS 430 Internet Multimedia Progra
 | `resources.html` | `/resources` | Agile/Kanban learning resources |
 | `about.html` | `/about` | Project info, team, and media credits |
 | `login.html` | `/login` | Firebase Auth sign-in / sign-up |
-| `sidebar.js` | — | Shared sidebar component (JS module) |
-| `shared.js` | — | Shared Firebase init, auth helpers, theme, toast |
-| `shared.css` | — | Design tokens, layout, sidebar, buttons, utilities |
+| `sidebar.js` | `/js/sidebar` | Shared sidebar component (JS module) |
+| `shared.js` | `/js/shared`| Shared Firebase init, auth helpers, theme, toast |
+| `shared.css` | `/css/shared` | Design tokens, layout, sidebar, buttons, utilities |
 
 ---
 
@@ -74,17 +74,22 @@ A real-time Kanban board web app built for the CS 430 Internet Multimedia Progra
 ## File Structure
 
 ```
-kanflow/
-├── index.html        # Board
-├── analytics.html    # Charts
-├── team.html         # Team management
-├── resources.html    # Learning resources
-├── about.html        # Project info and credits
-├── login.html        # Authentication
-├── sidebar.js        # Shared sidebar component
-├── shared.js         # Firebase init, auth, theme, toast helpers
-└── shared.css        # Shared styles and design tokens
-└── favicon.png       # Pixel icon representing the website in browser tabs
+cs430-final-group-project/
+├── css/
+│   └── shared.css
+├── images/
+│   └── favicon.png
+├── js/
+│   ├── shared.js
+│   └── sidebar.js
+├── .gitignore
+├── README.md
+├── about.html
+├── analytics.html
+├── index.html
+├── login.html
+├── resources.html
+└── team.html
 ```
 
 ---
